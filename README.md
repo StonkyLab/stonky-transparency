@@ -35,3 +35,13 @@ or use the client with a Bitcoin node:
 
 A proof made the same day can still be pending; the next daily runs add the
 Bitcoin attestation.
+
+## Failed records
+
+Days on which a log's checkpoint did not get its proof on its own day. A proof
+made later does not show that the day's signals existed on that day, so every
+such day is listed here.
+
+| Date | Concerns | Reason |
+|---|---|---|
+| 2026-11-11 | Stocks: `checkpoints/stocks/2026-11-11.checkpoint`, the 5 entries the log gained that day (its size went from 100 to 105) | The OpenTimestamps stamp at 23:00 UTC failed and the job did not try again that day. The proof was made by the next run, on 2026-11-12 at 23:00 UTC: it shows that these entries existed by then, not on the 11th. Since 2026-11-13 the job repeats the stamp until it succeeds. |
