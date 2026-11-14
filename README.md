@@ -2,16 +2,17 @@
 
 Every decision of Stonky's live strategies is recorded as a signal - the full
 book the strategy intends to hold, at the moment it decides - and appended to
-the transparency log of its portfolio (Tessera; checkpoints are C2SP signed
-notes). The log is append-only: an entry cannot be changed or removed without
+the transparency log of its portfolio on its trading venue (Tessera; checkpoints
+are C2SP signed notes). The log is append-only: an entry cannot be changed or removed without
 changing every checkpoint that came after it.
 
 The signals themselves are published a month later. Until then this repository
 fixes the state of each log once a day:
 
-    checkpoints/<portfolio>/<YYYY-MM-DD>.checkpoint       the log's checkpoint at 23:00 UTC:
-                                                          origin, number of entries, root hash, signature
-    checkpoints/<portfolio>/<YYYY-MM-DD>.checkpoint.ots   its OpenTimestamps proof
+    checkpoints/<log>/<YYYY-MM-DD>.checkpoint       the log's checkpoint of the day (stocks at 23:00 UTC,
+                                                    crypto at 23:55 UTC): origin, number of entries,
+                                                    root hash, signature
+    checkpoints/<log>/<YYYY-MM-DD>.checkpoint.ots   its OpenTimestamps proof
 
 A checkpoint commits to every signal in the log without revealing any of them.
 Its OpenTimestamps proof anchors it in the Bitcoin blockchain within hours, so
@@ -21,9 +22,14 @@ exactly the entries these checkpoints committed to, on the day they were made.
 
 ## Logs
 
-| Portfolio | Origin | Verifier key |
-|---|---|---|
-| Stocks | `stonky.cz/signals/stocks` | `stonky.cz/signals/stocks+3e2485ba+AYsX8zyIzaVDa/sbBUaYEsEnxvI1u0v1LjZuPM7PEWPI` |
+| Log | Portfolio, venue | Origin | Verifier key |
+|---|---|---|---|
+| `stocks` | Stocks, Interactive Brokers | `stonky.cz/signals/stocks` | `stonky.cz/signals/stocks+3e2485ba+AYsX8zyIzaVDa/sbBUaYEsEnxvI1u0v1LjZuPM7PEWPI` |
+| `crypto-bybit` | Crypto, Bybit | `stonky.cz/signals/crypto/bybit` | `stonky.cz/signals/crypto/bybit+70fdcb1f+AQzGUUPfiCWD+S7rGM0WeqmT9+0DyZfO76HGc1oaI3oH` |
+| `crypto-kraken` | Crypto, Kraken | `stonky.cz/signals/crypto/kraken` | `stonky.cz/signals/crypto/kraken+6a8b43b2+ATcbu3hXX+SAC+qkILoNklzZiVzuyYU+igKRf/PWygGp` |
+| `crypto-okx` | Crypto, OKX | `stonky.cz/signals/crypto/okx` | `stonky.cz/signals/crypto/okx+1d2cc6b7+AXjwLFH8SVUEZNhsyIVW+1GrJSxMl3HeiqXd3IamAz9g` |
+
+The stock log runs since 2026-10-14, the crypto logs since 2026-11-14.
 
 ## Verifying a timestamp
 
