@@ -33,7 +33,11 @@ checkpoints committed to.
 | `crypto-kraken` | Crypto, Kraken | `stonky.cz/signals/crypto/kraken` | `stonky.cz/signals/crypto/kraken+6a8b43b2+ATcbu3hXX+SAC+qkILoNklzZiVzuyYU+igKRf/PWygGp` |
 | `crypto-okx` | Crypto, OKX | `stonky.cz/signals/crypto/okx` | `stonky.cz/signals/crypto/okx+1d2cc6b7+AXjwLFH8SVUEZNhsyIVW+1GrJSxMl3HeiqXd3IamAz9g` |
 
-The stock log runs since 2026-10-14, the crypto logs since 2026-11-14.
+The stock log runs since 2026-10-14, the crypto logs since 2026-11-14. Until 2026-11-16 at
+12:53 UTC each log was anchored once a day, at the end of the day; every new state since. The live
+crypto track records start on 2026-11-17, the first whole day on which every new state of their
+logs was anchored within about a minute: the crypto logs' entries of 2026-11-14 to 2026-11-16 stay
+in the logs, outside those records.
 
 ## Verifying a timestamp
 
