@@ -1,0 +1,56 @@
+# Stonky transparency
+
+Every decision of Stonky's live strategies is recorded as a signal - the full
+book the strategy intends to hold, at the moment it decides - and appended to
+the transparency log of its portfolio on its trading venue (Tessera; checkpoints
+are C2SP signed notes). The log is append-only: an entry cannot be changed or removed without
+changing every checkpoint that came after it.
+
+The signals themselves are published a month later. Until then this repository
+fixes the state of each log within about a minute of every new entry, and its
+state at the end of each day:
+
+    checkpoints/<log>/<YYYY-MM-DD>/<size>.checkpoint   a new state of the log: origin, number of
+                                                       entries, root hash, signature
+    checkpoints/<log>/<YYYY-MM-DD>.checkpoint          the log's checkpoint at the end of the day
+                                                       (stocks at 23:00 UTC, crypto at 23:55 UTC)
+    <checkpoint>.ots                                   its OpenTimestamps proof
+
+A checkpoint commits to every signal in the log without revealing any of them.
+Its OpenTimestamps proof anchors it in the Bitcoin blockchain: that the
+checkpoint existed no later than its Bitcoin block, a few hours after it was
+made, rests neither on our word nor on this repository's history. Once a month's
+signals are published, anyone can check that they are exactly the entries these
+checkpoints committed to.
+
+## Logs
+
+| Log | Portfolio, venue | Origin | Verifier key |
+|---|---|---|---|
+| `stocks` | Stocks, Interactive Brokers | `stonky.cz/signals/stocks` | `stonky.cz/signals/stocks+3e2485ba+AYsX8zyIzaVDa/sbBUaYEsEnxvI1u0v1LjZuPM7PEWPI` |
+| `crypto-bybit` | Crypto, Bybit | `stonky.cz/signals/crypto/bybit` | `stonky.cz/signals/crypto/bybit+70fdcb1f+AQzGUUPfiCWD+S7rGM0WeqmT9+0DyZfO76HGc1oaI3oH` |
+| `crypto-kraken` | Crypto, Kraken | `stonky.cz/signals/crypto/kraken` | `stonky.cz/signals/crypto/kraken+6a8b43b2+ATcbu3hXX+SAC+qkILoNklzZiVzuyYU+igKRf/PWygGp` |
+| `crypto-okx` | Crypto, OKX | `stonky.cz/signals/crypto/okx` | `stonky.cz/signals/crypto/okx+1d2cc6b7+AXjwLFH8SVUEZNhsyIVW+1GrJSxMl3HeiqXd3IamAz9g` |
+
+The stock log runs since 2026-10-14, the crypto logs since 2026-11-14.
+
+## Verifying a timestamp
+
+Upload a `.checkpoint` file with its `.ots` proof at https://opentimestamps.org,
+or use the client with a Bitcoin node:
+
+    pip install opentimestamps-client
+    ots verify checkpoints/stocks/2026-10-14.checkpoint.ots
+
+A proof made the same day can still be pending; the next daily runs add the
+Bitcoin attestation.
+
+## Failed records
+
+Days on which a log's checkpoint did not get its proof on its own day. A proof
+made later does not show that the day's signals existed on that day, so every
+such day is listed here.
+
+| Date | Concerns | Reason |
+|---|---|---|
+| 2026-11-11 | Stocks: `checkpoints/stocks/2026-11-11.checkpoint`, the 5 entries the log gained that day (its size went from 100 to 105) | The OpenTimestamps stamp at 23:00 UTC failed and the job did not try again that day. The proof was made by the next run, on 2026-11-12 at 23:00 UTC: it shows that these entries existed by then, not on the 11th. Since 2026-11-13 the job repeats the stamp until it succeeds. |
