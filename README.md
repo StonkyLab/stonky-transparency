@@ -10,11 +10,12 @@ The signals themselves are published a month later. Until then this repository
 fixes the state of each log within about a minute of every new entry, and its
 state at the end of each day:
 
-    checkpoints/<log>/<YYYY-MM-DD>/<size>.checkpoint   a new state of the log: origin, number of
-                                                       entries, root hash, signature
-    checkpoints/<log>/<YYYY-MM-DD>.checkpoint          the log's checkpoint at the end of the day
-                                                       (stocks at 23:00 UTC, crypto at 23:55 UTC)
-    <checkpoint>.ots                                   its OpenTimestamps proof
+    checkpoints/<log>/<YYYY-MM-DD>/<HH-MM-SS>.checkpoint   a new state of the log, read at that time
+                                                           (UTC): origin, number of entries, root
+                                                           hash, signature
+    checkpoints/<log>/<YYYY-MM-DD>.checkpoint              the log's checkpoint at the end of the day
+                                                           (stocks at 23:00 UTC, crypto at 23:55 UTC)
+    <checkpoint>.ots                                       its OpenTimestamps proof
 
 A checkpoint commits to every signal in the log without revealing any of them.
 Its OpenTimestamps proof anchors it in the Bitcoin blockchain: that the
